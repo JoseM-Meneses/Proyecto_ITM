@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: shoestore
+  profiles:
+    active: dev
+
+server:
+  servlet:
+    context-path: /proyecto
