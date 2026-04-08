@@ -30,7 +30,7 @@ public class TenisDao {
             }
 
         } catch (Exception e) {
-            System.out.println("Error obtener al obtener todos: " + e.getMessage());
+            System.out.println("Error obtener al obtener todos los tenis: " + e.getMessage());
         }
 
         return lista;

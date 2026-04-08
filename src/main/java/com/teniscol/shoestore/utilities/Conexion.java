@@ -18,7 +18,7 @@ public class Conexion {
         try {
             Connection con = Conexion.obtenerConexion();
             if (con != null) {
-                System.out.println("Conectado a SQL");
+                System.out.println("Estas conectado a SQL");
             }
         } catch (Exception e) {
             System.out.println("Error de conexión: " + e.getMessage());
