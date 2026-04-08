@@ -75,26 +75,23 @@ public class ServiceRest {
             })
     @PostMapping("/comprar")
     public ResponseEntity<String> comprar(
-            @RequestParam String marca,
-            @RequestParam String modelo,
+            @RequestParam int idTenis,
+            @RequestParam int idCliente,
+            @RequestParam int idSucursal,
             @RequestParam int talla,
             @RequestParam int cantidad) {
 
-        if (talla < 35 || talla > 43) {
-            return ResponseEntity.badRequest().body("Talla inválida");
-        }
+        if (talla < 34 || talla > 45) return ResponseEntity.badRequest().body("Talla inválida");
+        if (cantidad <= 0) return ResponseEntity.badRequest().body("Cantidad inválida");
 
-        boolean ok = dao.realizarCompra(marca, modelo, talla, cantidad);
+        boolean ok = dao.realizarCompra(idTenis, idCliente, idSucursal, talla, cantidad);
 
         if (!ok) {
-            return ResponseEntity.badRequest()
-                    .body("No hay stock o no existe");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Error: Stock insuficiente o datos inexistentes.");
         }
 
-        return new ResponseEntity<>(
-                "Compra realizada correctamente ",
-                HttpStatus.CREATED
-        );
+        return new ResponseEntity<>("Compra registrada con éxito", HttpStatus.CREATED);
     }
 
     @Operation(
