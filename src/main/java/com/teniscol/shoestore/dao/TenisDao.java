@@ -20,7 +20,7 @@ public class TenisDao {
 
             while (rs.next()) {
                 Tenis t = new Tenis(
-                        rs.getInt("id"),
+                        rs.getInt("id_tenis"),
                         rs.getString("marca"),
                         rs.getString("modelo"),
                         rs.getDouble("precio"),
@@ -72,17 +72,23 @@ public class TenisDao {
         }
     }
 
-    public void eliminar(String marca) {
-        String sql = "DELETE FROM tenis WHERE marca = ?";
+    public void eliminar(int id) {
+        String sql = "DELETE FROM tenis WHERE id_tenis = ?";
 
         try (Connection con = Conexion.obtenerConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setString(1, marca);
-            ps.executeUpdate();
+            ps.setInt(1, id);
+            int filasAfectadas = ps.executeUpdate();
+
+            if (filasAfectadas > 0) {
+                System.out.println("Producto con ID " + id + " eliminado con éxito.");
+            } else {
+                System.out.println("No se encontró ningún producto con el ID: " + id);
+            }
 
         } catch (Exception e) {
-            System.out.println("Error al eliminar la marca: " + e.getMessage());
+            System.out.println("Error al eliminar el producto: " + e.getMessage());
         }
     }
 

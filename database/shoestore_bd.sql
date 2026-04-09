@@ -24,14 +24,14 @@ GO
 INSERT INTO tenis (marca, modelo, precio, stock)
 VALUES
 ('Nike', 'Air Max', 500000, 10),
-('Adidas', 'Forum', 500000, 8),
-('Nike', 'Jordan', 800000, 10),
-('Fila', 'Original', 200000, 8),
-('Nike', 'Air Force', 600000, 10),
-('Adidas', 'Predator', 450000, 8),
-('Vans', 'Era', 250000, 10),
-('Adidas', 'Campus', 550000, 8),
-('Nike', 'Shox', 800000, 10),
+('Adidas', 'Forum', 500000, 5),
+('Nike', 'Jordan', 800000, 8),
+('Fila', 'Original', 200000, 6),
+('Nike', 'Air Force', 600000, 3),
+('Adidas', 'Predator', 450000, 12),
+('Vans', 'Era', 250000, 11),
+('Adidas', 'Campus', 550000, 15),
+('Nike', 'Shox', 800000, 14),
 ('Puma', 'Speedcat', 300000, 5);
 
 

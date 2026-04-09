@@ -138,12 +138,12 @@ public class ServiceRest {
                             })
             })
     @DeleteMapping("/eliminar")
-    public ResponseEntity<String> eliminarMarca(@RequestParam String marca) {
+    public ResponseEntity<String> eliminarTenis(@RequestParam int id) {
 
-        dao.eliminar(marca);
+        dao.eliminar(id);
 
         return new ResponseEntity<>(
-                "Marca eliminada: " + marca,
+                "Producto con ID " + id + " eliminado correctamente.",
                 HttpStatus.OK
         );
     }
