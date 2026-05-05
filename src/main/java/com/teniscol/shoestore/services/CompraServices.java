@@ -1,16 +1,16 @@
 package com.teniscol.shoestore.services;
 
-public class Compra {
+public class CompraServices {
 
     private int id;
     private int idCliente;
     private int idSucursal;
     private String fecha;
 
-    public Compra() {
+    public CompraServices() {
     }
 
-    public Compra(int id, int idCliente, int idSucursal, String fecha) {
+    public CompraServices(int id, int idCliente, int idSucursal, String fecha) {
         this.id = id;
         this.idCliente = idCliente;
         this.idSucursal = idSucursal;
