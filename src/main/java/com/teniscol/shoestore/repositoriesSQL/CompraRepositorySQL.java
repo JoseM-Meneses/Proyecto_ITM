@@ -2,63 +2,74 @@ package com.teniscol.shoestore.repositoriesSQL;
 
 import com.teniscol.shoestore.DTO.CompraDetalleDTO;
 import com.teniscol.shoestore.utilities.Conexion;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompraRepositorySQL {
+@Repository
+public class CompraRepositorySQL implements CompraRepositoryInterface{
     public boolean realizarCompra(int idTenis, int idCliente, int idSucursal, int talla, int cantidad) {
 
         String verificar = "SELECT stock FROM tenis WHERE id_tenis = ?";
-
         String actualizar = "UPDATE tenis SET stock = stock - ? WHERE id_tenis = ?";
-
         String insertarCompra = "INSERT INTO compra (id_cliente, id_sucursal) VALUES (?, ?)";
-
         String insertarDetalle = "INSERT INTO detalle_compra (id_compra, id_tenis, talla, cantidad, precio_unitario) " +
                 "VALUES (?, ?, ?, ?, (SELECT precio FROM tenis WHERE id_tenis = ?))";
 
-        Connection con = null;
-        try {
-            con = Conexion.obtenerConexion();
+        try (Connection con = Conexion.obtenerConexion()) {
+
             con.setAutoCommit(false);
 
-            PreparedStatement ps1 = con.prepareStatement(verificar);
-            ps1.setInt(1, idTenis);
-            ResultSet rs = ps1.executeQuery();
-            if (!rs.next() || rs.getInt("stock") < cantidad) {
+            try (
+                    PreparedStatement ps1 = con.prepareStatement(verificar);
+                    PreparedStatement ps2 = con.prepareStatement(actualizar);
+                    PreparedStatement ps3 = con.prepareStatement(insertarCompra, Statement.RETURN_GENERATED_KEYS);
+                    PreparedStatement ps4 = con.prepareStatement(insertarDetalle)
+            ) {
+
+                ps1.setInt(1, idTenis);
+                try (ResultSet rs = ps1.executeQuery()) {
+                    if (!rs.next() || rs.getInt("stock") < cantidad) {
+                        con.rollback();
+                        return false;
+                    }
+                }
+
+                ps2.setInt(1, cantidad);
+                ps2.setInt(2, idTenis);
+                ps2.executeUpdate();
+
+                ps3.setInt(1, idCliente);
+                ps3.setInt(2, idSucursal);
+                ps3.executeUpdate();
+
+                int idGenerado = 0;
+                try (ResultSet generatedKeys = ps3.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        idGenerado = generatedKeys.getInt(1);
+                    }
+                }
+
+                ps4.setInt(1, idGenerado);
+                ps4.setInt(2, idTenis);
+                ps4.setInt(3, talla);
+                ps4.setInt(4, cantidad);
+                ps4.setInt(5, idTenis);
+                ps4.executeUpdate();
+
+                con.commit();
+                return true;
+
+            } catch (Exception e) {
+                con.rollback();
+                System.out.println("Error en compra: " + e.getMessage());
                 return false;
             }
 
-            PreparedStatement ps2 = con.prepareStatement(actualizar);
-            ps2.setInt(1, cantidad);
-            ps2.setInt(2, idTenis);
-            ps2.executeUpdate();
-
-            PreparedStatement ps3 = con.prepareStatement(insertarCompra, Statement.RETURN_GENERATED_KEYS);
-            ps3.setInt(1, idCliente);
-            ps3.setInt(2, idSucursal);
-            ps3.executeUpdate();
-
-            ResultSet generatedKeys = ps3.getGeneratedKeys();
-            int idGenerado = 0;
-            if (generatedKeys.next()) idGenerado = generatedKeys.getInt(1);
-
-            PreparedStatement ps4 = con.prepareStatement(insertarDetalle);
-            ps4.setInt(1, idGenerado);
-            ps4.setInt(2, idTenis);
-            ps4.setInt(3, talla);
-            ps4.setInt(4, cantidad);
-            ps4.setInt(5, idTenis);
-            ps4.executeUpdate();
-
-            con.commit();
-            return true;
-
         } catch (Exception e) {
-            if (con != null) try { con.rollback(); } catch (SQLException ex) {}
-            System.out.println("Error en compra: " + e.getMessage());
+            System.out.println("Error de conexión: " + e.getMessage());
             return false;
         }
     }

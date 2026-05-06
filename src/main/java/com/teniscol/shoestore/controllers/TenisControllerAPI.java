@@ -10,9 +10,9 @@ public interface TenisControllerAPI {
 
     int totalTenis();
 
-    ResponseEntity<String> actualizarTenis(int idTenis, double precio, int cantidad);
+    ResponseEntity<String> actualizarTenis(int idTenis, double precio, int stock);
 
-    ResponseEntity<String> eliminarTenis(int id);
+    ResponseEntity<String> eliminarTenis(int idTenis);
 
-    ResponseEntity<String> agregarTenis(String marca, String modelo, double precio, int cantidad);
+    ResponseEntity<String> agregarTenis(String marca, String modelo, double precio, int stock);
 }

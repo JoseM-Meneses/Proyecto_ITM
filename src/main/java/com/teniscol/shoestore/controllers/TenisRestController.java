@@ -2,6 +2,7 @@ package com.teniscol.shoestore.controllers;
 
 import com.teniscol.shoestore.identidadesSQL.Tenis;
 import com.teniscol.shoestore.services.TenisServicesInterface;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,12 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/restienda/tenis")
-public class TenisController implements TenisControllerAPI {
+@RequestMapping("/api/tenis")
+@Tag(name = "Tenis", description = "Operaciones del inventario de tenis")
+public class TenisRestController implements TenisControllerAPI {
 
     private final TenisServicesInterface service;
 
-    public TenisController(TenisServicesInterface service) {
+    public TenisRestController(TenisServicesInterface service) {
         this.service = service;
     }
 
@@ -30,17 +32,13 @@ public class TenisController implements TenisControllerAPI {
         return service.totalStock();
     }
 
-    @Override
     @PutMapping("/actualizar")
     public ResponseEntity<String> actualizarTenis(
-            @RequestParam int idTenis,
+            @RequestParam int id_tenis,
             @RequestParam double precio,
-            @RequestParam int cantidad) {
+            @RequestParam int stock) {
 
-        if (precio <= 0) return ResponseEntity.badRequest().body("Precio inválido");
-        if (cantidad < 0) return ResponseEntity.badRequest().body("Cantidad inválida");
-
-        boolean ok = service.actualizarStock(idTenis, precio, cantidad);
+        boolean ok = service.actualizarStock(id_tenis, precio, stock);
 
         if (!ok) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No encontrado");
@@ -51,9 +49,9 @@ public class TenisController implements TenisControllerAPI {
 
     @Override
     @DeleteMapping("/eliminar")
-    public ResponseEntity<String> eliminarTenis(@RequestParam int id) {
+    public ResponseEntity<String> eliminarTenis(@RequestParam int idTenis) {
 
-        boolean eliminado = service.eliminarTenis(id);
+        boolean eliminado = service.eliminarTenis(idTenis);
 
         if (!eliminado) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No encontrado");
@@ -62,27 +60,24 @@ public class TenisController implements TenisControllerAPI {
         return ResponseEntity.ok("Eliminado correctamente");
     }
 
-    @Override
     @PostMapping("/agregar")
     public ResponseEntity<String> agregarTenis(
             @RequestParam String marca,
             @RequestParam String modelo,
             @RequestParam double precio,
-            @RequestParam int cantidad) {
+            @RequestParam int stock) {
 
         Tenis tenis = Tenis.builder()
                 .marca(marca)
                 .modelo(modelo)
                 .precio(precio)
-                .stock(cantidad)
+                .stock(stock)
                 .build();
 
         Tenis creado = service.insertarTenis(tenis);
 
-        return new ResponseEntity<>(
-                "ID generado: " + creado.getIdTenis(),
-                HttpStatus.CREATED
-        );
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Tenis creado con ID: " + creado.getIdTenis());
     }
 }
     // Link del Swagger

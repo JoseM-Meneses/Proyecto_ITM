@@ -14,7 +14,7 @@ public class TenisRepositorySQL implements TenisRepositoryInterface {
     @Override
     public List<Tenis> obtenerTodos() {
         List<Tenis> lista = new ArrayList<>();
-        String sql = "SELECT * FROM tenis";
+        String sql = "SELECT id_tenis, marca, modelo, precio, stock FROM tenis";
 
         try (Connection con = Conexion.obtenerConexion();
              PreparedStatement ps = con.prepareStatement(sql);
@@ -110,9 +110,10 @@ public class TenisRepositorySQL implements TenisRepositoryInterface {
 
             ps.executeUpdate();
 
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                tenis.setIdTenis(rs.getInt(1));
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    tenis.setIdTenis(rs.getInt(1));
+                }
             }
 
         } catch (Exception e) {

@@ -3,6 +3,7 @@ package com.teniscol.shoestore.controllers;
 import com.teniscol.shoestore.DTO.CompraDetalleDTO;
 import com.teniscol.shoestore.repositoriesSQL.CompraRepositorySQL;
 import com.teniscol.shoestore.services.CompraServices;
+import com.teniscol.shoestore.services.CompraServicesInterface;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,11 +17,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/restienda/compra")
+@RequestMapping("/api/compras")
 @Tag(name = "Compra", description = "Operaciones de compra de tenis")
-public class CompraController {
+public class CompraRestController implements CompraControllerAPI{
 
-    private CompraRepositorySQL dao = new CompraRepositorySQL();
+    private final CompraServicesInterface service;
+
+    public CompraRestController(CompraServicesInterface service) {
+        this.service = service;
+    }
 
     @Operation(
             summary = "Realizar compra",
@@ -35,7 +40,7 @@ public class CompraController {
                                             schema = @Schema(implementation = String.class))
                             })
             })
-
+    @Override
     @PostMapping("/comprar")
     public ResponseEntity<String> comprarTenis(
             @RequestParam int idTenis,
@@ -44,17 +49,15 @@ public class CompraController {
             @RequestParam int talla,
             @RequestParam int cantidad) {
 
-        if (talla < 34 || talla > 45) return ResponseEntity.badRequest().body("Talla inválida");
-        if (cantidad <= 0) return ResponseEntity.badRequest().body("Cantidad inválida");
-
-        boolean ok = dao.realizarCompra(idTenis, idCliente, idSucursal, talla, cantidad);
+        boolean ok = service.realizarCompra(idTenis, idCliente, idSucursal, talla, cantidad);
 
         if (!ok) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            return ResponseEntity.badRequest()
                     .body("Error: Stock insuficiente o datos inexistentes.");
         }
 
-        return new ResponseEntity<>("Compra registrada con éxito", HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body("Compra registrada con éxito");
     }
 
     @Operation(
@@ -75,16 +78,17 @@ public class CompraController {
                     )
             })
 
+    @Override
     @GetMapping("/listar")
     public ResponseEntity<List<CompraDetalleDTO>> obtenerCompras() {
 
-        List<CompraDetalleDTO> compras = dao.obtenerCompras();
+        List<CompraDetalleDTO> compras = service.obtenerCompras();
 
         if (compras.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return ResponseEntity.noContent().build();
         }
 
-        return new ResponseEntity<>(compras, HttpStatus.OK);
+        return ResponseEntity.ok(compras);
     }
 
     @Operation(
@@ -108,7 +112,7 @@ public class CompraController {
     @DeleteMapping("/eliminar")
     public ResponseEntity<String> eliminarCompra(@RequestParam int idCompra) {
 
-        boolean eliminado = dao.eliminarCompra(idCompra);
+        boolean eliminado = service.eliminarCompra(idCompra);
 
         if (!eliminado) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
