@@ -2,6 +2,7 @@ package com.teniscol.shoestore.controllers;
 
 import com.teniscol.shoestore.identidadesSQL.Tenis;
 import com.teniscol.shoestore.services.TenisServicesInterface;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,17 +21,29 @@ public class TenisRestController implements TenisControllerAPI {
         this.service = service;
     }
 
+    @Operation(
+            summary = "Ver inventario",
+            description = "Permite ver inventario de la tienda")
+
     @Override
     @GetMapping("/inventario")
     public List<Tenis> obtenerTenis() {
         return service.obtenerTenis();
     }
 
+    @Operation(
+            summary = "Ver cantidad",
+            description = "Permite ver la cantidad total de tenis en la tienda")
+
     @Override
     @GetMapping("/total")
     public int totalTenis() {
         return service.totalStock();
     }
+
+    @Operation(
+            summary = "Actualizar inventario",
+            description = "Permite actualizar inventario de cada marca de tenis en la tienda")
 
     @PutMapping("/actualizar")
     public ResponseEntity<String> actualizarTenis(
@@ -47,6 +60,10 @@ public class TenisRestController implements TenisControllerAPI {
         return ResponseEntity.ok("Actualizado correctamente");
     }
 
+    @Operation(
+            summary = "Eliminar tenis",
+            description = "Permite eliminar tenis del inventario de la tienda")
+
     @Override
     @DeleteMapping("/eliminar")
     public ResponseEntity<String> eliminarTenis(@RequestParam int idTenis) {
@@ -59,6 +76,10 @@ public class TenisRestController implements TenisControllerAPI {
 
         return ResponseEntity.ok("Eliminado correctamente");
     }
+
+    @Operation(
+            summary = "Agregar tenis",
+            description = "Permite agregar un nuevo tenis al inventario de la tienda")
 
     @PostMapping("/agregar")
     public ResponseEntity<String> agregarTenis(
