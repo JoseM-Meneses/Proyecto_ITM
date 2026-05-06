@@ -40,29 +40,17 @@ CREATE TABLE detalle_compra (
 );
 
 
+GO
 INSERT INTO tenis (marca, modelo, precio, stock)
 VALUES
-('Nike', 'Air Max', 500000, 10),
-('Adidas', 'Forum', 500000, 8),
-('Nike', 'Jordan', 800000, 10),
-('Fila', 'Original', 200000, 8),
-('Nike', 'Air Force', 600000, 10),
-('Adidas', 'Predator', 450000, 8),
-('Vans', 'Era', 250000, 10),
-('Adidas', 'Campus', 550000, 8),
-('Nike', 'Shox', 800000, 10),
-('Puma', 'Speedcat', 300000, 5);
+('Nike', 'Air Max', 500000, 10);
 
+GO
 INSERT INTO sucursal (nombre, ciudad)
 VALUES
-('TenisCol Centro', 'Medellín'),
-('TenisCol Norte', 'Bogotá'),
-('TenisCol Sur', 'Cali');
+	('TenisCol Centro', 'Medellín');
 
-INSERT INTO cliente (nombre, correo, telefono)
-VALUES
-('Ana Perez', 'ana@gmail.com', '3001111111'),
-('Juan Torres', 'juan@gmail.com', '3002222222'),
-('Luis Gomez', 'luis@gmail.com', '3003333333'),
-('Maria Lopez', 'maria@gmail.com', '3004444444'),
-('Carlos Ruiz', 'carlos@gmail.com', '3005555555');
+GO
+ INSERT INTO cliente (nombre, correo, telefono)
+ VALUES
+	('Ana Perez', 'ana@gmail.com', '3001111111');
