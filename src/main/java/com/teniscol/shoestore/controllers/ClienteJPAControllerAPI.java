@@ -6,10 +6,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface ClienteJPAControllerAPI {
-
     List<Cliente> obtenerClientes();
-
     ResponseEntity<Cliente> guardarCliente(String nombre, String correo, String telefono);
-
     ResponseEntity<String> eliminarCliente(int id);
 }

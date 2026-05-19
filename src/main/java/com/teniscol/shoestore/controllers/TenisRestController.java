@@ -45,6 +45,7 @@ public class TenisRestController implements TenisControllerAPI {
             summary = "Actualizar inventario",
             description = "Permite actualizar inventario de cada marca de tenis en la tienda")
 
+    @Override
     @PutMapping("/actualizar")
     public ResponseEntity<String> actualizarTenis(
             @RequestParam int id_tenis,
@@ -81,6 +82,7 @@ public class TenisRestController implements TenisControllerAPI {
             summary = "Agregar tenis",
             description = "Permite agregar un nuevo tenis al inventario de la tienda")
 
+    @Override
     @PostMapping("/agregar")
     public ResponseEntity<String> agregarTenis(
             @RequestParam String marca,
