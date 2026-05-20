@@ -1,9 +1,9 @@
 package com.teniscol.shoestore.services;
 
-import com.teniscol.shoestore.identidadesSQL.Tenis;
+import com.teniscol.shoestore.identidadesJPA.Tenis;
 import java.util.List;
 
-public interface TenisServicesInterface {
+public interface TenisJPAServicesInterface {
 
     List<Tenis> obtenerTenis();
 

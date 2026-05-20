@@ -1,6 +1,6 @@
 package com.teniscol.shoestore.controllers;
 
-import com.teniscol.shoestore.identidadesSQL.Tenis;
+import com.teniscol.shoestore.identidadesJPA.Tenis;
 import org.springframework.http.ResponseEntity;
 import java.util.List;
 

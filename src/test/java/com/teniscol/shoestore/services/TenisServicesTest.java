@@ -1,7 +1,6 @@
 package com.teniscol.shoestore.services;
 
-import com.teniscol.shoestore.identidadesSQL.Tenis;
-import com.teniscol.shoestore.repositoriesSQL.TenisRepositoryInterface;
+import com.teniscol.shoestore.identidadesJPA.Tenis;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith; 
@@ -24,7 +23,7 @@ class TenisServicesTest {
     TenisRepositoryInterface repository;
 
     @InjectMocks
-    private TenisServices TenisServices;
+    private TenisJPAServices TenisServices;
     private List<Tenis> tenis;
 
     @BeforeEach

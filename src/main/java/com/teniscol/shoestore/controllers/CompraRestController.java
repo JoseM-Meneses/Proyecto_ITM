@@ -71,7 +71,7 @@ public class CompraRestController implements CompraControllerAPI{
                             content = {
                                     @Content(
                                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                            schema = @Schema(implementation = CompraServices.class))
+                                            schema = @Schema(implementation = CompraDetalleDTO.class))
                             }),
                     @ApiResponse(
                             responseCode = "204",

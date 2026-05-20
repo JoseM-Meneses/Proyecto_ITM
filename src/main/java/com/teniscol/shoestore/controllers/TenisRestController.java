@@ -1,7 +1,7 @@
 package com.teniscol.shoestore.controllers;
 
-import com.teniscol.shoestore.identidadesSQL.Tenis;
-import com.teniscol.shoestore.services.TenisServicesInterface;
+import com.teniscol.shoestore.identidadesJPA.Tenis;
+import com.teniscol.shoestore.services.TenisJPAServicesInterface;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
@@ -15,9 +15,9 @@ import java.util.List;
 @Tag(name = "Tenis", description = "Operaciones del inventario de tenis")
 public class TenisRestController implements TenisControllerAPI {
 
-    private final TenisServicesInterface service;
+    private final TenisJPAServicesInterface service;
 
-    public TenisRestController(TenisServicesInterface service) {
+    public TenisRestController(TenisJPAServicesInterface service) {
         this.service = service;
     }
 
@@ -45,6 +45,7 @@ public class TenisRestController implements TenisControllerAPI {
             summary = "Actualizar inventario",
             description = "Permite actualizar inventario de cada marca de tenis en la tienda")
 
+    @Override
     @PutMapping("/actualizar")
     public ResponseEntity<String> actualizarTenis(
             @RequestParam int id_tenis,
@@ -81,6 +82,7 @@ public class TenisRestController implements TenisControllerAPI {
             summary = "Agregar tenis",
             description = "Permite agregar un nuevo tenis al inventario de la tienda")
 
+    @Override
     @PostMapping("/agregar")
     public ResponseEntity<String> agregarTenis(
             @RequestParam String marca,
