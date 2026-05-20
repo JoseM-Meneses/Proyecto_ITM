@@ -4,7 +4,7 @@ import com.teniscol.shoestore.identidadesJPA.Tenis;
 import org.springframework.http.ResponseEntity;
 import java.util.List;
 
-public interface TenisControllerAPI {
+public interface TenisJPAControllerAPI {
 
     List<Tenis> obtenerTenis();
 

@@ -13,11 +13,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/tenis")
 @Tag(name = "Tenis", description = "Operaciones del inventario de tenis")
-public class TenisRestController implements TenisControllerAPI {
+public class TenisJPARestController implements TenisJPAControllerAPI {
 
     private final TenisJPAServicesInterface service;
 
-    public TenisRestController(TenisJPAServicesInterface service) {
+    public TenisJPARestController(TenisJPAServicesInterface service) {
         this.service = service;
     }
 
