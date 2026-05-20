@@ -1,6 +1,6 @@
 package com.teniscol.shoestore.repositoriesSQL;
 
-import com.teniscol.shoestore.identidadesSQL.Tenis;
+import com.teniscol.shoestore.identidadesJPA.Tenis;
 import com.teniscol.shoestore.utilities.Conexion;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
