@@ -56,12 +56,20 @@ class CompraServicesTest {
 
     @Test
     void realizarCompraExitosa() {
-        when(repository.realizarCompra(anyInt(), anyInt(), anyInt(), anyInt(), anyInt()))
-                .thenReturn(true);
 
-        boolean result = service.realizarCompra(1, 1, 1, 40, 2);
+        CompraDetalleDTO compra = new CompraDetalleDTO();
+        compra.setIdCompra(1);
+        compra.setIdCliente(1);
+        compra.setCantidad(2);
 
-        assertTrue(result);
+        when(repository.realizarCompra(anyInt(), anyInt(), anyInt(), anyInt(), anyInt())).thenReturn(compra);
+
+        CompraDetalleDTO result = service.realizarCompra(1, 1, 1, 40, 2);
+
+        assertEquals(1, result.getIdCompra());
+        assertEquals(1, result.getIdCliente());
+        assertEquals(2, result.getCantidad());
+
         verify(repository).realizarCompra(1, 1, 1, 40, 2);
     }
 

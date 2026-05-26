@@ -5,14 +5,9 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface TenisJPAControllerAPI {
-
     List<Tenis> obtenerTenis();
-
     int totalTenis();
-
     ResponseEntity<String> actualizarTenis(int idTenis, double precio, int stock);
-
     ResponseEntity<String> eliminarTenis(int idTenis);
-
     ResponseEntity<String> agregarTenis(String marca, String modelo, double precio, int stock);
 }

@@ -43,22 +43,33 @@ public class CompraRestController implements CompraControllerAPI{
 
     @Override
     @PostMapping("/comprar")
-    public ResponseEntity<String> comprarTenis(
+    public ResponseEntity<CompraDetalleDTO> comprarTenis(
             @RequestParam int idTenis,
             @RequestParam int idCliente,
             @RequestParam int idSucursal,
             @RequestParam int talla,
-            @RequestParam int cantidad) {
+            @RequestParam int cantidad
+    ) {
 
-        boolean ok = service.realizarCompra(idTenis, idCliente, idSucursal, talla, cantidad);
+        CompraDetalleDTO compra =
+                service.realizarCompra(
+                        idTenis,
+                        idCliente,
+                        idSucursal,
+                        talla,
+                        cantidad
+                );
 
-        if (!ok) {
-            return ResponseEntity.badRequest()
-                    .body("Error: Stock insuficiente o datos inexistentes.");
+        if (compra == null) {
+
+            return ResponseEntity
+                    .badRequest()
+                    .build();
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body("Compra registrada con éxito");
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(compra);
     }
 
     @Operation(

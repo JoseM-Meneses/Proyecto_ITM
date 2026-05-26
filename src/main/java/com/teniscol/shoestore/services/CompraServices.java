@@ -16,7 +16,7 @@ public class CompraServices implements CompraServicesInterface {
     }
 
     @Override
-    public boolean realizarCompra(int idTenis, int idCliente, int idSucursal, int talla, int cantidad) {
+    public CompraDetalleDTO realizarCompra(int idTenis, int idCliente, int idSucursal, int talla, int cantidad) {
 
         if (talla < 34 || talla > 45) {
             throw new IllegalArgumentException("Talla inválida");
