@@ -57,4 +57,20 @@ public class ClienteJPARestController implements ClienteJPAControllerAPI {
 
         return ResponseEntity.ok("Cliente eliminado");
     }
+
+    @Override
+    @PutMapping("/actualizar")
+    public ResponseEntity<String> actualizarCliente(
+            @RequestParam int id_cliente,
+            @RequestParam String correo,
+            @RequestParam String telefono) {
+
+        boolean ok = service.actualizarCliente(id_cliente, correo, telefono);
+
+        if (!ok) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente no encontrado");
+        }
+
+        return ResponseEntity.ok("Cliente actualizado correctamente");
+    }
 }
