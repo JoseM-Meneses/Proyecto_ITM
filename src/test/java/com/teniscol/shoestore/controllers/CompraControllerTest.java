@@ -52,12 +52,23 @@ public class CompraControllerTest {
 
     @Test
     void comprarTenis_exitosa() {
-        when(service.realizarCompra(1,1,1,40,2)).thenReturn(true);
 
-        ResponseEntity<String> response = controller.comprarTenis(1,1,1,40,2);
+        CompraDetalleDTO compra = new CompraDetalleDTO();
+        compra.setIdCompra(1);
+        compra.setIdCliente(1);
+        compra.setCantidad(2);
+
+        when(service.realizarCompra(1,1,1,40,2)).thenReturn(compra);
+
+        ResponseEntity<CompraDetalleDTO> response = controller.comprarTenis(1,1,1,40,2);
 
         assertEquals(201, response.getStatusCode().value());
-        assertTrue(response.getBody().contains("éxito"));
+
+        assertNotNull(response.getBody());
+        assertEquals(1, response.getBody().getIdCompra());
+        assertEquals(1, response.getBody().getIdCliente());
+        assertEquals(2, response.getBody().getCantidad());
+
         verify(service).realizarCompra(1,1,1,40,2);
     }
 
