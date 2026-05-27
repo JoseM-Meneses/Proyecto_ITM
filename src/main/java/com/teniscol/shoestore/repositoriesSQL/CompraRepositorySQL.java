@@ -158,7 +158,7 @@ public class CompraRepositorySQL implements CompraRepositoryInterface {
     @Override
     public boolean eliminarCompra(int idCompra) {
 
-        String sqlDetalle = " DELETE FROM detalle_compraWHERE id_compra = ? ";
+        String sqlDetalle = " DELETE FROM detalle_compra WHERE id_compra = ? ";
 
         String sqlCompra = " DELETE FROM compra WHERE id_compra = ?";
 
